@@ -1,5 +1,6 @@
 import requests
 import boto3
+import random
 from botocore.exceptions import ClientError
 
 
@@ -37,6 +38,7 @@ def list_relevant_jobs(keyword, location):
     params = {
         "keyword": keyword,
         "location": location,
+        "start": random.randint(0, 250)  # Random start for pagination
     }
     headers = {
         "Content-Type": "application/json",
