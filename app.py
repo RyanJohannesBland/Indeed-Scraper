@@ -3,7 +3,8 @@ from aws_cdk import (
     aws_iam as iam,
     aws_events as events,
     aws_events_targets as targets,
-    aws_dynamodb as dynamodb,  # <-- add this import
+    aws_dynamodb as dynamodb,
+    RemovalPolicy,  # <-- import RemovalPolicy from aws_cdk
     Stack,
     Duration,
     App
@@ -25,7 +26,7 @@ class ScrapeIndeedJobsStack(Stack):
                 name="isoDate",
                 type=dynamodb.AttributeType.STRING
             ),
-            removal_policy=dynamodb.RemovalPolicy.DESTROY
+            removal_policy=RemovalPolicy.DESTROY  # Use RemovalPolicy from aws_cdk
         )
 
         # Lambda Layer for dependencies (CDK v2 compliant)
