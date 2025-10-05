@@ -1,4 +1,4 @@
-name: Deploy CDK App
+name: Deploy Script Stack
 
 on:
   push:

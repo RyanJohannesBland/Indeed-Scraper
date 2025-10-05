@@ -19,14 +19,14 @@ class ScrapeIndeedJobsStack(Stack):
             code=_lambda.Code.from_asset(
                 path="lambda_layer",
                 bundling={
-                    "image": _lambda.Runtime.PYTHON_3_9.bundling_image,
+                    "image": _lambda.Runtime.PYTHON_3_11.bundling_image,
                     "command": [
                         "bash", "-c",
                         "pip install -r requirements.txt -t /asset-output/python"
                     ]
                 }
             ),
-            compatible_runtimes=[_lambda.Runtime.PYTHON_3_9],
+            compatible_runtimes=[_lambda.Runtime.PYTHON_3_11],
             description="Lambda layer with requests dependency"
         )
 
@@ -64,7 +64,7 @@ class ScrapeIndeedJobsStack(Stack):
         lambda_fn = _lambda.Function(
             self, "ScrapeIndeedJobsLambda",
             function_name="scrape-indeed-jobs",
-            runtime=_lambda.Runtime.PYTHON_3_9,
+            runtime=_lambda.Runtime.PYTHON_3_11,
             handler="main.handler",
             code=_lambda.Code.from_asset("src"),
             role=lambda_role,
