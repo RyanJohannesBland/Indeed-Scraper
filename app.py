@@ -18,6 +18,7 @@ class ScrapeIndeedJobsStack(Stack):
         # DynamoDB Table
         table = dynamodb.Table(
             self, "IndeedJobsTable",
+            table_name="IndeedJobs",  # Set the table name here
             partition_key=dynamodb.Attribute(
                 name="title",
                 type=dynamodb.AttributeType.STRING
@@ -26,7 +27,7 @@ class ScrapeIndeedJobsStack(Stack):
                 name="isoDate",
                 type=dynamodb.AttributeType.STRING
             ),
-            removal_policy=RemovalPolicy.DESTROY  # Use RemovalPolicy from aws_cdk
+            removal_policy=RemovalPolicy.DESTROY
         )
 
         # Lambda Layer for dependencies (CDK v2 compliant)
