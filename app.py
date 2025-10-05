@@ -77,6 +77,9 @@ class ScrapeIndeedJobsStack(Stack):
             )
         )
 
+        # Grant Lambda role read/write access to the DynamoDB table
+        table.grant_read_write_data(lambda_role)
+
         # Lambda function
         lambda_fn = _lambda.Function(
             self, "ScrapeIndeedJobsLambda",
