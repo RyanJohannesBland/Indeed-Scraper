@@ -15,7 +15,7 @@ def get_configuration_set():
 api_key, sender_email_address, receiver_email_address = get_configuration_set()
 
 
-def has_keywords(text):
+def has_keywords(title, description):
     keywords = [
         "python",
         "django",
@@ -29,8 +29,25 @@ def has_keywords(text):
         "reactjs",
         "aws",
     ]
-    text = text.lower()
-    return any(k in text for k in keywords)
+    title = title.lower()
+    description = description.lower()
+    return any(k in title for k in keywords) or any(k in description for k in keywords)
+
+
+def is_new_job(title, isoDate):
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table('IndeedJobsTable')
+    try:
+        response = table.get_item(
+            Key={
+                'title': title,
+                'isoDate': isoDate
+            }
+        )
+        return 'Item' not in response
+    except ClientError as e:
+        print(f"Error checking job in DynamoDB: {e.response['Error']['Message']}")
+        return False
 
 
 def list_relevant_jobs(keyword, location):
@@ -54,7 +71,7 @@ def list_relevant_jobs(keyword, location):
             description = job.get("description", "").lower()
             url = job.get("url", "")
             date = job.get("isoDate", "")
-            if has_keywords(title) or has_keywords(description):
+            if has_keywords(title, description) and is_new_job(title, date):
                 filtered_jobs.append({"title": title, "description": description, "url": url, "date": date})
 
         return filtered_jobs

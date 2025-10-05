@@ -3,6 +3,7 @@ from aws_cdk import (
     aws_iam as iam,
     aws_events as events,
     aws_events_targets as targets,
+    aws_dynamodb as dynamodb,  # <-- add this import
     Stack,
     Duration,
     App
@@ -12,6 +13,20 @@ from constructs import Construct
 class ScrapeIndeedJobsStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
+
+        # DynamoDB Table
+        table = dynamodb.Table(
+            self, "IndeedJobsTable",
+            partition_key=dynamodb.Attribute(
+                name="title",
+                type=dynamodb.AttributeType.STRING
+            ),
+            sort_key=dynamodb.Attribute(
+                name="isoDate",
+                type=dynamodb.AttributeType.STRING
+            ),
+            removal_policy=dynamodb.RemovalPolicy.DESTROY
+        )
 
         # Lambda Layer for dependencies (CDK v2 compliant)
         layer = _lambda.LayerVersion(
