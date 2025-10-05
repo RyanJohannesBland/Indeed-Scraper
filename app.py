@@ -98,7 +98,7 @@ class ScrapeIndeedJobsStack(Stack):
             self, "ScrapeIndeedJobsSchedule",
             schedule=events.Schedule.cron(
                 minute="0",
-                hour="15,18,21,0",
+                hour="15,18,21,0", # 11, 2, 5, 8 EST
             )
         )
         rule.add_target(targets.LambdaFunction(lambda_fn))

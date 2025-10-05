@@ -36,7 +36,7 @@ def has_keywords(title, description):
 
 def is_new_job(title, isoDate):
     dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table('IndeedJobsTable')
+    table = dynamodb.Table('IndeedJobs')
     try:
         response = table.get_item(
             Key={
